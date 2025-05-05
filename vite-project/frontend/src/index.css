@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*{
+  font-family: Outfit;
+}
+ .active hr{
+    @apply block
+ }
+ ::-webkit-scrollbar{
+   @apply hidden
+ }
+ @media (max-width:740px) {
+  .active p{
+    @apply text-white bg-blue-500
+  }
+ }
+ /* In your main CSS file */
+.dark-mode {
+  background-color:beige; /* dark background */
+  color:black; /* light text */
+}
+
+/* Optionally: */
+.dark-mode a {
+  color: #bb86fc; /* light links */
+}
+
+/* You can customize further depending on your design */
