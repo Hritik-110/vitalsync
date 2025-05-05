@@ -1,6 +1,6 @@
 import express from 'express'
 import { loginUser, registerUser,getProfile,updateProfile,bookAppointment, listAppointment,cancelAppointment,paymentRazorpay,verifyRazorpay, paymentStripe, verifyStripe} from '../controllers/userControler.js'
-import authUser from '../middlewares/authuser.js'
+import authUser from '../middlewares/authUser.js'
 import upload from '../middlewares/upload.js'
 const userRouter=express.Router()
 userRouter.post('/register',registerUser)
