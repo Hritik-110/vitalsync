@@ -13,14 +13,14 @@ const port = process.env.PORT || 4000;
 
 // ✅ CORS must be before any routes
 app.use(cors({
-  origin: "https://vitalsync-dusky.vercel.app",
+  origin: ["https://vitalsync-dusky.vercel.app", "https://vitalsync-bu4m.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
 
 // ✅ Allow preflight for all routes
 app.options("*", cors({
-  origin: "https://vitalsync-dusky.vercel.app",
+  origin: ["https://vitalsync-dusky.vercel.app", "https://vitalsync-bu4m.vercel.app"],
   credentials: true
 }));
 
