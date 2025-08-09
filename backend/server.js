@@ -6,38 +6,51 @@ import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoute.js";
 import doctorRouter from "./routes/doctorRoute.js";
 import adminRouter from './routes/adminRoute.js';
-import { doctorList } from './controllers/doctorControler.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ CORS must be before any routes
+// ✅ Allowed frontend URLs
+const allowedOrigins = [
+  "https://vitalsync-dusky.vercel.app",
+  "https://vitalsync-bu4m.vercel.app"
+];
+
+// ✅ Apply CORS globally (before routes)
 app.use(cors({
-  origin: ["https://vitalsync-dusky.vercel.app", "https://vitalsync-bu4m.vercel.app"],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
 
 // ✅ Allow preflight for all routes
 app.options("*", cors({
-  origin: ["https://vitalsync-dusky.vercel.app", "https://vitalsync-bu4m.vercel.app"],
+  origin: allowedOrigins,
   credentials: true
 }));
 
+// ✅ Parse JSON body
 app.use(express.json());
 
-// Connect DB & Cloudinary
+// ✅ Connect DB & Cloudinary
 connectDB();
 connectCloudinary();
 
-// Routes
+// ✅ Routes
 app.use("/api/user", userRouter);
-app.use("/api/doctor", doctorRouter);
+app.use("/api/doctor", doctorRouter); // /api/doctor/list will be in this router
 app.use("/api/admin", adminRouter);
-app.get("/api/doctor/list", doctorList);
 
+// ✅ Test route
 app.get("/", (req, res) => {
   res.send("API Working");
 });
 
+// ✅ Start server
 app.listen(port, () => console.log(`Server started on PORT:${port}`));
