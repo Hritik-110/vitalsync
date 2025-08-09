@@ -18,26 +18,18 @@ connectCloudinary();
 // Middleware
 app.use(express.json());
 
-// Allowed origins
-const allowedOrigins = [
-  "https://vitalsync-admin.onrender.com",
-];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: "https://vitalsync-admin.onrender.com", // frontend URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
 
-// Handle OPTIONS requests for all routes
-app.options("*", cors());
+app.options("*", cors({
+  origin: "https://vitalsync-admin.onrender.com",
+  credentials: true
+}));
+
 
 // Routes
 app.use("/api/user", userRouter);
