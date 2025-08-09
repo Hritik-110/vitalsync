@@ -1,7 +1,6 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
   "main": "Server.js",
   "type": "module",
   "scripts": {
@@ -25,5 +24,7 @@
     "razorpay": "^2.9.6",
     "stripe": "^17.7.0",
     "validator": "^13.12.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }

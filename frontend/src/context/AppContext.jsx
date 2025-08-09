@@ -12,6 +12,7 @@ const AppContextProvider = (props) => {
     const [doctors, setDoctors] = useState([])
     const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '')
     const [userData, setUserData] = useState(false)
+   // console.log(bs)
 
     // Getting Doctors using API
     const getDoctosData = async () => {
