@@ -1,42 +1,54 @@
-import express from "express"
-import cors from 'cors'
-import 'dotenv/config'
-import connectDB from "./config/mongodb.js"
-import connectCloudinary from "./config/cloudinary.js"
- import userRouter from "./routes/userRoute.js"
-import doctorRouter from "./routes/doctorRoute.js"
-import adminRouter from './routes/adminRoute.js'
+import express from "express";
+import cors from "cors";
+import 'dotenv/config';
+import connectDB from "./config/mongodb.js";
+import connectCloudinary from "./config/cloudinary.js";
+import userRouter from "./routes/userRoute.js";
+import doctorRouter from "./routes/doctorRoute.js";
+import adminRouter from './routes/adminRoute.js';
 import { doctorList } from './controllers/doctorControler.js';
 
-// app config
-//const express= require('express');
+const app = express();
+const port = process.env.PORT || 4000;
 
-const app = express()
-//const express()=require('express')
-const port = process.env.PORT || 4000
-connectDB()
-connectCloudinary()
+// Connect DB and Cloudinary
+connectDB();
+connectCloudinary();
 
-// middlewares
-app.use(express.json())
+// Middleware
+app.use(express.json());
+
+// Allowed origins
+const allowedOrigins = [
+  "https://vitalsync-admin.onrender.com",
+  "https://vitalsync-frontend-dmy8.onrender.com"
+];
+
 app.use(cors({
-  origin: [
-    "https://vitalsync-admin.onrender.com", // your admin frontend
-    "https://vitalsync-frontend-dmy8.onrender.com" // optional if you have another frontend
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
-}))
+}));
 
-// api endpoints
-app.use("/api/user", userRouter)
-// app.use("/api/admin", adminRouter)
-app.use("/api/doctor", doctorRouter)
-app.use('/api/admin',adminRouter)
+// Handle OPTIONS requests for all routes
+app.options("*", cors());
 
-app.get("/api/doctor/list", doctorList); // Added route for fetching doctors
+// Routes
+app.use("/api/user", userRouter);
+app.use("/api/doctor", doctorRouter);
+app.use("/api/admin", adminRouter);
+
+app.get("/api/doctor/list", doctorList);
 
 app.get("/", (req, res) => {
-  res.send("API Working")
+  res.send("API Working");
 });
 
-app.listen(port, () => console.log(`Server started on PORT:${port}`))
+app.listen(port, () => console.log(`Server started on PORT:${port}`));
