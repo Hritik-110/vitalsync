@@ -20,16 +20,10 @@ app.use(express.json());
 
 
 app.use(cors({
-  origin: "https://vitalsync-admin.onrender.com", // frontend URL
+  origin: "https://vitalsync-dusky.vercel.app", // frontend URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
-
-app.options("*", cors({
-  origin: "https://vitalsync-admin.onrender.com",
-  credentials: true
-}));
-
 
 // Routes
 app.use("/api/user", userRouter);
