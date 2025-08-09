@@ -21,7 +21,6 @@ app.use(express.json());
 // Allowed origins
 const allowedOrigins = [
   "https://vitalsync-admin.onrender.com",
-  "https://vitalsync-frontend-dmy8.onrender.com"
 ];
 
 app.use(cors({
