@@ -20,7 +20,10 @@ connectCloudinary()
 // middlewares
 app.use(express.json())
 app.use(cors({
-  origin:"*",
+  origin: [
+    "https://vitalsync-admin.onrender.com", // your admin frontend
+    "https://vitalsync-frontend-dmy8.onrender.com" // optional if you have another frontend
+  ],
   credentials: true
 }))
 
