@@ -11,25 +11,29 @@ import { doctorList } from './controllers/doctorControler.js';
 const app = express();
 const port = process.env.PORT || 4000;
 
-// Connect DB and Cloudinary
-connectDB();
-connectCloudinary();
-
-// Middleware
-app.use(express.json());
-
-
+// ✅ CORS must be before any routes
 app.use(cors({
-  origin: "https://vitalsync-dusky.vercel.app", // frontend URL
+  origin: "https://vitalsync-dusky.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
+
+// ✅ Allow preflight for all routes
+app.options("*", cors({
+  origin: "https://vitalsync-dusky.vercel.app",
+  credentials: true
+}));
+
+app.use(express.json());
+
+// Connect DB & Cloudinary
+connectDB();
+connectCloudinary();
 
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
-
 app.get("/api/doctor/list", doctorList);
 
 app.get("/", (req, res) => {
