@@ -10,13 +10,13 @@ import adminRouter from './routes/adminRoute.js';
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ Allowed frontend URLs
 const allowedOrigins = [
   "https://vitalsync-dusky.vercel.app",
-  "https://vitalsync-bu4m.vercel.app"
+  "https://vitalsync-bu4m.vercel.app",
+  "http://localhost:3000" // for local testing
 ];
 
-// ✅ Apply CORS globally (before routes)
+// ✅ Global CORS
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -29,13 +29,13 @@ app.use(cors({
   credentials: true
 }));
 
-// ✅ Allow preflight for all routes
+// ✅ Handle all OPTIONS requests
 app.options("*", cors({
   origin: allowedOrigins,
   credentials: true
 }));
 
-// ✅ Parse JSON body
+// ✅ JSON parser
 app.use(express.json());
 
 // ✅ Connect DB & Cloudinary
@@ -44,13 +44,11 @@ connectCloudinary();
 
 // ✅ Routes
 app.use("/api/user", userRouter);
-app.use("/api/doctor", doctorRouter); // /api/doctor/list will be in this router
+app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 
-// ✅ Test route
 app.get("/", (req, res) => {
   res.send("API Working");
 });
 
-// ✅ Start server
 app.listen(port, () => console.log(`Server started on PORT:${port}`));
